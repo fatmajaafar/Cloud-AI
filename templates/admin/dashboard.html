@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Tableau de bord</h2>
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-center bg-primary text-white">
+            <div class="card-body">
+                <h3>{{ users_count }}</h3>
+                <p>Utilisateurs</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-success text-white">
+            <div class="card-body">
+                <h3>{{ products_count }}</h3>
+                <p>Produits</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-warning text-white">
+            <div class="card-body">
+                <h3>{{ orders_count }}</h3>
+                <p>Commandes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-danger text-white">
+            <div class="card-body">
+                <h3>{{ pending_orders }}</h3>
+                <p>Commandes en attente</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <a href="{{ url_for('admin_products') }}" class="btn btn-primary btn-lg w-100">Gérer les produits</a>
+    </div>
+    <div class="col-md-6">
+        <a href="{{ url_for('admin_orders') }}" class="btn btn-success btn-lg w-100">Gérer les commandes</a>
+    </div>
+</div>
+{% endblock %}

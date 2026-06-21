@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📋 Récapitulatif de la commande</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Sous-total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.price }} €</td>
+            <td>{{ product.subtotal }} €</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3"><strong>Total</strong></td>
+            <td><strong>{{ total }} €</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="shipping_address" class="form-label">Adresse de livraison</label>
+        <input type="text" class="form-control" id="shipping_address" name="shipping_address" required>
+    </div>
+    <div class="d-flex justify-content-between">
+        <a href="{{ url_for('cart.cart') }}" class="btn btn-secondary">Retour au panier</a>
+        <button type="submit" class="btn btn-success">✅ Confirmer la commande</button>
+    </div>
+</form>
+{% endblock %}

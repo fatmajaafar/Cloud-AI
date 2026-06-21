@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Gestion des produits</h2>
+<a href="#" class="btn btn-success mb-3">➕ Ajouter un produit</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product[0] }}</td>
+            <td>{{ product[1] }}</td>
+            <td>{{ product[3] }} €</td>
+            <td>{{ product[4] }}</td>
+            <td>
+                <a href="#" class="btn btn-sm btn-primary">✏️ Modifier</a>
+                <a href="#" class="btn btn-sm btn-danger">🗑️ Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
