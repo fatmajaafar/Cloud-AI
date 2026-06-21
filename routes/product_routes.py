@@ -6,7 +6,8 @@ products_bp = Blueprint('products', __name__)
 @products_bp.route('/')
 def index():
     products = get_all_products()
-    return render_template('index.html', products=products)
+    categories = get_categories()
+    return render_template('index.html', products=products, categories=categories)
 
 @products_bp.route('/search')
 def search():
@@ -16,8 +17,11 @@ def search():
     products = search_products(query, category_id if category_id else None)
     categories = get_categories()
     
-    return render_template('index.html', products=products, categories=categories,
-                          selected_category=category_id, search_query=query)
+    return render_template('index.html', 
+                         products=products, 
+                         categories=categories,
+                         selected_category=category_id, 
+                         search_query=query)
 
 @products_bp.route('/product/<int:product_id>')
 def detail(product_id):

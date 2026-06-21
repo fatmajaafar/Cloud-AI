@@ -71,7 +71,7 @@ def search_products(query, category_id=None):
 def get_categories():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT id, name FROM categories')
+    cur.execute('SELECT id, name FROM categories ORDER BY name')
     categories = cur.fetchall()
     cur.close()
     conn.close()
