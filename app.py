@@ -1,5 +1,5 @@
-from flask import Flask
-from flask_login import LoginManager
+from flask import Flask, redirect, url_for, request
+from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 from config.config import Config
 from models.user import User
@@ -21,6 +21,25 @@ login_manager.login_view = 'auth.login'
 @login_manager.user_loader
 def load_user(user_id):
     return User.get_by_id(user_id)
+
+# ============================================
+# Protection des routes
+# ============================================
+@app.before_request
+def require_login():
+    public_routes = [
+        'auth.login',
+        'auth.register',
+        'static'
+    ]
+    
+    if request.endpoint in public_routes:
+        return None
+    
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+    
+    return None
 
 # ============================================
 # Enregistrement des Blueprints
