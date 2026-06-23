@@ -26,7 +26,7 @@
             </td>
             <td>{{ order[6] }}</td>
             <td>
-                <form method="POST" action="{{ url_for('update_order_status', order_id=order[0]) }}">
+                <form method="POST" action="{{ url_for('admin.update_order_status', order_id=order[0]) }}">
                     <select name="status" class="form-select form-select-sm d-inline w-auto">
                         <option value="En attente" {% if order[3] == 'En attente' %}selected{% endif %}>En attente</option>
                         <option value="En préparation" {% if order[3] == 'En préparation' %}selected{% endif %}>En préparation</option>
