@@ -10,36 +10,39 @@ order_bp = Blueprint('orders', __name__)
 @login_required
 def checkout():
     cart_items = get_user_cart(current_user.id)
-    
+
     if not cart_items:
         flash('Votre panier est vide.', 'warning')
         return redirect(url_for('products.index'))
-    
+
     if request.method == 'POST':
         shipping_address = request.form.get('shipping_address', 'Adresse non spécifiée')
         order_id, error = process_checkout(current_user.id, shipping_address)
-        
+
         if error:
             flash(error, 'danger')
             return redirect(url_for('cart.cart'))
-        
+
         flash('✅ Commande validée avec succès !', 'success')
         return redirect(url_for('orders.list'))
-    
+
+    # GET — récapitulatif avant confirmation
+    # [0]=id [1]=user_id [2]=product_id [3]=quantity [4]=updated_at
+    # [5]=name [6]=price [7]=stock [8]=image_url
     products = []
     total = 0
     for item in cart_items:
         subtotal = float(item[6]) * item[3]
         total += subtotal
         products.append({
-            'id': item[2],
-            'name': item[5],
-            'price': float(item[6]),
-            'stock': item[7],
+            'id':       item[2],
+            'name':     item[5],
+            'price':    float(item[6]),
+            'stock':    item[7],
             'quantity': item[3],
             'subtotal': subtotal
         })
-    
+
     return render_template('checkout.html', products=products, total=total)
 
 @order_bp.route('/orders')

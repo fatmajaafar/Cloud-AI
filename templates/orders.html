@@ -5,28 +5,44 @@
 {% if orders %}
     {% for order in orders %}
     <div class="card mb-3">
-        <div class="card-header">
-            Commande #{{ order.id }} - {{ order.created_at }}
-            <span class="badge bg-{{ 'warning' if order.status == 'En attente' else 'success' if order.status == 'Expédiée' else 'info' }}">
-                {{ order.status }}
-            </span>
-            <span class="float-end"><strong>{{ order.total }} €</strong></span>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Commande #{{ order.id }}</strong>
+                &nbsp;·&nbsp;
+                {% if order.created_at %}
+                    {{ order.created_at.strftime('%d/%m/%Y %H:%M') }}
+                {% endif %}
+            </div>
+            <div>
+                <span class="badge bg-{{
+                    'warning text-dark' if order.status == 'En attente'
+                    else 'info text-dark' if order.status == 'En cours'
+                    else 'primary' if order.status == 'Expédiée'
+                    else 'success' if order.status == 'Livrée'
+                    else 'secondary'
+                }}">{{ order.status }}</span>
+                &nbsp;
+                <strong>{{ "%.2f"|format(order.total) }} €</strong>
+            </div>
         </div>
         <div class="card-body">
+            <p class="text-muted mb-2">📍 {{ order.shipping_address }}</p>
             <table class="table table-sm">
                 <thead>
                     <tr>
                         <th>Produit</th>
                         <th>Quantité</th>
-                        <th>Prix</th>
+                        <th>Prix unitaire</th>
+                        <th>Sous-total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in order.items %}
+                    {% for item in order.order_items %}  {# ← renommé #}
                     <tr>
                         <td>{{ item.name }}</td>
                         <td>{{ item.quantity }}</td>
-                        <td>{{ item.price }} €</td>
+                        <td>{{ "%.2f"|format(item.price) }} €</td>
+                        <td>{{ "%.2f"|format(item.price * item.quantity) }} €</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -35,8 +51,8 @@
     </div>
     {% endfor %}
 {% else %}
-<p>Vous n'avez pas encore passé de commande.</p>
-<a href="{{ url_for('products.index') }}" class="btn btn-primary">Voir les produits</a>
+    <p>Vous n'avez pas encore passé de commande.</p>
+    <a href="{{ url_for('products.index') }}" class="btn btn-primary">Voir les produits</a>
 {% endif %}
 
 {% endblock %}

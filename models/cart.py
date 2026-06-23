@@ -4,11 +4,14 @@ def get_user_cart(user_id):
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('''
-        SELECT c.*, p.name, p.price, p.image_url
+        SELECT c.id, c.user_id, c.product_id, c.quantity, c.updated_at,
+               p.name, p.price, p.stock, p.image_url
         FROM cart c
         JOIN products p ON c.product_id = p.id
         WHERE c.user_id = %s
     ''', (user_id,))
+    # [0]=id [1]=user_id [2]=product_id [3]=quantity [4]=updated_at
+    # [5]=name [6]=price [7]=stock [8]=image_url
     items = cur.fetchall()
     cur.close()
     conn.close()
