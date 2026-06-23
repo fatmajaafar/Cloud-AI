@@ -14,9 +14,9 @@ def cart():
     for item in items:
         product_id = item[2]
         quantity = item[3]
-        name = item[6]
-        price = float(item[7])
-        image_url = item[8]
+        name = item[5]          # p.name
+        price = float(item[6])  # p.price
+        image_url = item[8]     # p.image_url
         
         subtotal = price * quantity
         total += subtotal
