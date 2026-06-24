@@ -26,9 +26,6 @@ def checkout():
         flash('✅ Commande validée avec succès !', 'success')
         return redirect(url_for('orders.list'))
 
-    # GET — récapitulatif avant confirmation
-    # [0]=id [1]=user_id [2]=product_id [3]=quantity [4]=updated_at
-    # [5]=name [6]=price [7]=stock [8]=image_url
     products = []
     total = 0
     for item in cart_items:

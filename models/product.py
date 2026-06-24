@@ -76,3 +76,42 @@ def get_categories():
     cur.close()
     conn.close()
     return categories
+
+def create_product(name, description, price, stock, image_url):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        'INSERT INTO products (name, description, price, stock, image_url) '
+        'VALUES (%s, %s, %s, %s, %s) RETURNING id',
+        (name, description, price, stock, image_url)
+    )
+    product_id = cur.fetchone()[0]
+    conn.commit()
+    cur.close()
+    conn.close()
+    return product_id
+
+def update_product(product_id, name, description, price, stock, image_url):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        'UPDATE products SET name=%s, description=%s, price=%s, stock=%s, image_url=%s '
+        'WHERE id=%s',
+        (name, description, price, stock, image_url, product_id)
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def delete_product(product_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    # Supprimer les dépendances d'abord
+    cur.execute('DELETE FROM cart WHERE product_id = %s', (product_id,))
+    cur.execute('DELETE FROM order_items WHERE product_id = %s', (product_id,))
+    cur.execute('DELETE FROM reviews WHERE product_id = %s', (product_id,))
+    cur.execute('DELETE FROM product_categories WHERE product_id = %s', (product_id,))
+    cur.execute('DELETE FROM products WHERE id = %s', (product_id,))
+    conn.commit()
+    cur.close()
+    conn.close()    
